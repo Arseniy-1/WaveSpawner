@@ -22,6 +22,12 @@ namespace Code.Infractructure
             StartFistWave();
         }
 
+        private void OnDisable()
+        {
+            foreach (Wave wave in _waves) 
+                wave.Disable();
+        }
+
         private void StartFistWave()
         {
             Wave wave = _waves.Dequeue();
@@ -32,6 +38,7 @@ namespace Code.Infractructure
         private void HandleEndWave(Wave wave)
         {
             wave.WaveFinished -= HandleEndWave;
+            wave.Disable();
             
             if (_waves.TryDequeue(out var newWave) == false)
                 return;
