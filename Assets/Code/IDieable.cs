@@ -1,4 +1,7 @@
-﻿public interface IDieable
+﻿namespace Code
 {
-    void Die();
+    public interface IDieable
+    {
+        void Die();
+    }
 }

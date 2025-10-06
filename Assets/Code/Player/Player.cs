@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code
+namespace Code.Player
 {
     public class Player : MonoBehaviour, ITarget
     {

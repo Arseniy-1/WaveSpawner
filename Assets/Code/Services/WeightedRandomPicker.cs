@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Scripts.Servises
+namespace Code.Services
 {
     public class WeightedRandomPicker<T> where T : class
     {

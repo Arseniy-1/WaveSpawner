@@ -1,20 +1,19 @@
-using Code;
 using UnityEngine;
 
-namespace Project.Scripts.CompositionRoot
+namespace Code.Spawners.Enemy
 {
     public class EnemyFabric
     {
-        private readonly Player _player;
+        private readonly Player.Player _player;
 
-        public EnemyFabric(Player player)
+        public EnemyFabric(Player.Player player)
         {
             _player = player;
         }
         
-        public Enemy Create(Enemy enemy)
+        public Code.Enemy.Enemy Create(Code.Enemy.Enemy enemy)
         {
-            Enemy doneEnemy = Object.Instantiate(enemy);
+            Code.Enemy.Enemy doneEnemy = Object.Instantiate(enemy);
             
             doneEnemy.Initialize(_player);
 

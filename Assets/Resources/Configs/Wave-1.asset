@@ -21,12 +21,16 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _enemiesWeights: []
+  _enemiesWeights:
+  - _prefab: {fileID: 7075741624531407723, guid: 237317293858aba47b9179ed28b1c2e8, type: 3}
+    _weight: 0.546
+  - _prefab: {fileID: 8143883989467241833, guid: 7598806d718c50e45b006c5dcb530217, type: 3}
+    _weight: 0.098
   _boss: {fileID: 0}
-  _spawnClusterSize: {x: 0, y: 0}
-  _waveDuration: 0
-  _spawnDuration: 0
+  _spawnClusterSize: {x: 1, y: 2}
+  _waveDuration: 76
+  _spawnDuration: 1.5
   _enemyStatModifiers:
     <Value>k__BackingField: 0
-    <Type>k__BackingField: 0
+    <Type>k__BackingField: 1
     <Duration>k__BackingField: 0

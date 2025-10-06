@@ -99,7 +99,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <EnemyType>k__BackingField: 0
-  _speed: 3
+  <EnemyStats>k__BackingField:
+    <Experience>k__BackingField: 0
+    <Speed>k__BackingField:
+      <BaseValue>k__BackingField: 3
+      <CurrentValue>k__BackingField: 3
+    <Health>k__BackingField:
+      <BaseValue>k__BackingField: 0
+      <CurrentValue>k__BackingField: 0
 --- !u!58 &8422595796131625916
 CircleCollider2D:
   m_ObjectHideFlags: 0

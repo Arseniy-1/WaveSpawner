@@ -1,47 +1,50 @@
 ﻿using System.Collections.Generic;
-using Project.Scripts.CompositionRoot;
+using Code.Waves;
 
-public class EnemyPool : Pool<Enemy>
+namespace Code.Spawners.Enemy
 {
-    private readonly EnemyFabric _enemyFabric;
-    private readonly List<Enemy> _enemies = new();
-    private readonly List<StatModifier> _modifiers = new();
-
-    public EnemyPool(Enemy prefab, EnemyFabric enemyFabric, int startAmount) : base(prefab, startAmount)
+    public class EnemyPool : Pool<Code.Enemy.Enemy>
     {
-        _enemyFabric = enemyFabric;
-        
-        CreateStartCount();
-    }
+        private readonly EnemyFabric _enemyFabric;
+        private readonly List<Code.Enemy.Enemy> _enemies = new();
+        private readonly List<StatModifier> _modifiers = new();
 
-    public void AddModifier(StatModifier statModifier)
-    {
-        _modifiers.Add(statModifier);
-        
-        foreach (Enemy enemy in _enemies)
+        public EnemyPool(Code.Enemy.Enemy prefab, EnemyFabric enemyFabric, int startAmount) : base(prefab, startAmount)
         {
-           ApplyModifier(enemy, statModifier);
-        }
-    }
+            _enemyFabric = enemyFabric;
         
-    protected override Enemy Create()
-    {
-        var enemy = _enemyFabric.Create(Prefab);
-
-        foreach (StatModifier modifier in _modifiers)
-        {
-            ApplyModifier(enemy, modifier);
+            CreateStartCount();
         }
 
-        enemy.gameObject.SetActive(false);
-        _enemies.Add(enemy);
+        public void AddModifier(StatModifier statModifier)
+        {
+            _modifiers.Add(statModifier);
+        
+            foreach (Code.Enemy.Enemy enemy in _enemies)
+            {
+                ApplyModifier(enemy, statModifier);
+            }
+        }
+        
+        protected override Code.Enemy.Enemy Create()
+        {
+            var enemy = _enemyFabric.Create(Prefab);
 
-        return enemy;
-    }
+            foreach (StatModifier modifier in _modifiers)
+            {
+                ApplyModifier(enemy, modifier);
+            }
 
-    private void ApplyModifier(Enemy enemy, StatModifier statModifier)
-    {
-        enemy.EnemyStats.Speed.AddModifier(statModifier.Copy());
-        enemy.EnemyStats.Health.AddModifier(statModifier.Copy());
+            enemy.gameObject.SetActive(false);
+            _enemies.Add(enemy);
+
+            return enemy;
+        }
+
+        private void ApplyModifier(Code.Enemy.Enemy enemy, StatModifier statModifier)
+        {
+            enemy.EnemyStats.Speed.AddModifier(statModifier.Copy());
+            enemy.EnemyStats.Health.AddModifier(statModifier.Copy());
+        }
     }
 }

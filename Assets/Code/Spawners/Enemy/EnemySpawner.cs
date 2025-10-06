@@ -1,26 +1,29 @@
 ﻿using System.Collections.Generic;
-using Code;
-using Project.Scripts.CompositionRoot;
+using Code.Enemy;
+using Code.Waves;
 using UnityEngine;
 
-public class EnemySpawner : Spawner<Enemy>
+namespace Code.Spawners.Enemy
 {
-    private List<Transform> _spawnPoints;
-
-    public EnemyTypes EnemyType => Prefab.EnemyType;
-
-    public EnemySpawner(Enemy enemyPrefab, Player player, int startCount)
+    public class EnemySpawner : Spawner<Code.Enemy.Enemy>
     {
-        StartAmount = startCount;
-        var fabric = new EnemyFabric(player);
+        private List<Transform> _spawnPoints;
 
-        Prefab = enemyPrefab;
+        public EnemyTypes EnemyType => Prefab.EnemyType;
 
-        Pool = new EnemyPool(Prefab, fabric, StartAmount);
-    }
+        public EnemySpawner(Code.Enemy.Enemy enemyPrefab, Player.Player player, int startCount)
+        {
+            StartAmount = startCount;
+            var fabric = new EnemyFabric(player);
 
-    public void ApplyModifier(StatModifier statModifier)
-    {
-        (Pool as EnemyPool)?.AddModifier(statModifier);
+            Prefab = enemyPrefab;
+
+            Pool = new EnemyPool(Prefab, fabric, StartAmount);
+        }
+
+        public void ApplyModifier(StatModifier statModifier)
+        {
+            (Pool as EnemyPool)?.AddModifier(statModifier);
+        }
     }
 }

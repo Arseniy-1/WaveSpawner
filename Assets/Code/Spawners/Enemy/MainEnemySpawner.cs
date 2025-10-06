@@ -1,54 +1,58 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Code;
+using Code.Enemy;
+using Code.Waves;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class MainEnemySpawner : MonoBehaviour
+namespace Code.Spawners.Enemy
 {
-    [SerializeField] private List<Enemy> _enemyPrefabs;
-    [SerializeField] private int _startPoolCount;
-    [SerializeField] private float _spawnOffset;
+    public class MainEnemySpawner : MonoBehaviour
+    {
+        [SerializeField] private List<Code.Enemy.Enemy> _enemyPrefabs;
+        [SerializeField] private int _startPoolCount;
+        [SerializeField] private float _spawnOffset;
 
-    private IReadOnlyList<Transform> _spawnPoints;
+        private IReadOnlyList<Transform> _spawnPoints;
 
-    private readonly Dictionary<EnemyTypes, EnemySpawner> _spawners = new();
+        private readonly Dictionary<EnemyTypes, EnemySpawner> _spawners = new();
     
 
-    public void Initialize(Player player, IReadOnlyList<Transform> spawnPoints)
-    {
-        _spawnPoints = spawnPoints;
-        
-        foreach (var enemySpawner in _enemyPrefabs
-                     .Select(enemyPrefab => new EnemySpawner(enemyPrefab, player, _startPoolCount)))
+        public void Initialize(Player.Player player, IReadOnlyList<Transform> spawnPoints)
         {
-            _spawners.Add(enemySpawner.EnemyType, enemySpawner);
-        }
-    }
-
-    public Enemy Spawn(EnemyTypes type)
-    {
-        var spawner = _spawners[type];
-
-        Enemy enemy = spawner.Spawn();
+            _spawnPoints = spawnPoints;
         
-        MoveEnemy(enemy);
+            foreach (var enemySpawner in _enemyPrefabs
+                         .Select(enemyPrefab => new EnemySpawner(enemyPrefab, player, _startPoolCount)))
+            {
+                _spawners.Add(enemySpawner.EnemyType, enemySpawner);
+            }
+        }
 
-        return enemy;
-    }
-
-    public void ApplyModifier(StatModifier modifier)
-    {
-        foreach (EnemySpawner enemySpawner in _spawners.Values)
+        public Code.Enemy.Enemy Spawn(EnemyTypes type)
         {
-            enemySpawner.ApplyModifier(modifier);
-        }
-    }
+            var spawner = _spawners[type];
 
-    private void MoveEnemy(Enemy enemy)
-    {
-        Vector2 spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
+            Code.Enemy.Enemy enemy = spawner.Spawn();
         
-        enemy.transform.position = Random.insideUnitCircle * _spawnOffset + spawnPoint;
+            MoveEnemy(enemy);
+
+            return enemy;
+        }
+
+        public void ApplyModifier(StatModifier modifier)
+        {
+            foreach (EnemySpawner enemySpawner in _spawners.Values)
+            {
+                enemySpawner.ApplyModifier(modifier);
+            }
+        }
+
+        private void MoveEnemy(Code.Enemy.Enemy enemy)
+        {
+            Vector2 spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
+        
+            enemy.transform.position = Random.insideUnitCircle * _spawnOffset + spawnPoint;
+        }
     }
 }

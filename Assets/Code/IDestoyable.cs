@@ -1,6 +1,9 @@
 ﻿using System;
 
-public interface IDestoyable<T>
+namespace Code
 {
-    public event Action<T> OnDestroyed;
+    public interface IDestoyable<T>
+    {
+        public event Action<T> OnDestroyed;
+    }
 }

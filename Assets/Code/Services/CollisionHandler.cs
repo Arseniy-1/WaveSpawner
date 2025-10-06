@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Project.Scripts.Services
+namespace Code.Services
 {
     public abstract class CollisionHandler : MonoBehaviour
     {

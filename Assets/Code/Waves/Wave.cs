@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Code.Enemy;
+using Code.Services;
+using Code.Spawners.Enemy;
 using Cysharp.Threading.Tasks;
-using Project.Scripts.Servises;
 using Sirenix.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Project.Scripts.ArenaSystem
+namespace Code.Waves
 {
     public class Wave
     {
@@ -16,14 +18,14 @@ namespace Project.Scripts.ArenaSystem
 
         private readonly MainEnemySpawner _mainEnemySpawner;
 
-        private readonly List<ObjectWeightPair<Enemy>> _enemyWeights;
+        private readonly List<ObjectWeightPair<Enemy.Enemy>> _enemyWeights;
         private CancellationTokenSource _cancellationToken;
 
         public Wave(WaveConfig config, MainEnemySpawner mainEnemySpawner)
         {
             _config = config;
             _mainEnemySpawner = mainEnemySpawner;
-            _enemyWeights = new List<ObjectWeightPair<Enemy>>();
+            _enemyWeights = new List<ObjectWeightPair<Enemy.Enemy>>();
             
             if(config == false)
                 Debug.Log("config not setted");
@@ -31,7 +33,7 @@ namespace Project.Scripts.ArenaSystem
             _enemyWeights.AddRange(_config.EnemyWeights);
         }
         
-        public event Action<Wave> OnWaveFinished;
+        public event Action<Wave> WaveFinished;
 
         public void Begin()
         {
@@ -43,7 +45,7 @@ namespace Project.Scripts.ArenaSystem
 
             if (_enemyWeights.IsNullOrEmpty())
             {
-                OnWaveFinished?.Invoke(this);
+                WaveFinished?.Invoke(this);
                 
                 return;
             }
@@ -58,9 +60,9 @@ namespace Project.Scripts.ArenaSystem
             _cancellationToken?.Cancel();
         }
 
-        private async UniTaskVoid SpawningEnemies(List<ObjectWeightPair<Enemy>> enemies, CancellationToken token)
+        private async UniTaskVoid SpawningEnemies(List<ObjectWeightPair<Enemy.Enemy>> enemies, CancellationToken token)
         {
-            var picker = new WeightedRandomPicker<Enemy>(enemies.Select(pair => pair.Prefab).ToList(),
+            var picker = new WeightedRandomPicker<Enemy.Enemy>(enemies.Select(pair => pair.Prefab).ToList(),
                 enemies.Select(pair => pair.Weight).ToList());
             
             while(token.IsCancellationRequested == false)
@@ -72,7 +74,7 @@ namespace Project.Scripts.ArenaSystem
 
                 for (int i = 0; i < enemyCount; i++)
                 {
-                    Enemy enemy = _mainEnemySpawner.Spawn(preferredEnemy);
+                    Enemy.Enemy enemy = _mainEnemySpawner.Spawn(preferredEnemy);
                     
                     enemy.ResetState();
                 }
@@ -83,7 +85,7 @@ namespace Project.Scripts.ArenaSystem
         {
             await UniTask.Delay(TimeSpan.FromSeconds(_config.WaveDuration), cancellationToken: token);
             
-            OnWaveFinished?.Invoke(this);
+            WaveFinished?.Invoke(this);
         }
     }
 }
