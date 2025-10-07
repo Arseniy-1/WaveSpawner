@@ -44,7 +44,6 @@ namespace Code.Infractructure
                 return;
             
             newWave.Begin();
-            Debug.Log("13e1");
             newWave.WaveFinished += HandleEndWave;
         }
 

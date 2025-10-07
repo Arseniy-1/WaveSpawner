@@ -15,7 +15,7 @@ namespace Code.Spawners.Bullet
         private Coroutine _coroutine;
         private WaitForSeconds _waitLife;
 
-        public event Action<Bullet> OnDestroyed;
+        public event Action<Bullet> Destroyed;
         public event Action<IDamageable> OnDamagableCollided;
 
         public Rigidbody2D Rigidbody2D { get; private set; }
@@ -74,7 +74,7 @@ namespace Code.Spawners.Bullet
 
         private void ReturnToPool()
         {
-            OnDestroyed?.Invoke(this);
+            Destroyed?.Invoke(this);
         }
     
         private IEnumerator ReenableTrailNextFrame()

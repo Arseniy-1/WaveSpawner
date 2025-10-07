@@ -10,25 +10,33 @@ namespace Code.Enemy
         [field: SerializeField] public EnemyTypes EnemyType { get; private set; }
         [field: SerializeField] public EnemyStats EnemyStats { get; private set; }
         [field: SerializeField] public Destroyer Destroyer { get; private set; }
-
+        [SerializeField] private CollisionDetector _collisionDetector;
+        
         private EnemyMover _enemyMover;
 
-        public event Action<Enemy> OnDestroyed;
+        public event Action<Enemy> Destroyed;
 
+        private void OnEnable()
+        {
+            _collisionDetector.CollisionDetected += OnCollisionDetected;
+        }
+
+        private void OnDisable()
+        {
+            _collisionDetector.CollisionDetected -= OnCollisionDetected;
+        }
 
         public void Initialize(ITarget target)
         {
             _enemyMover = new EnemyMover(EnemyStats, target, transform);
             Destroyer.Initialize(EnemyStats.Health, this);
+            EnemyStats.Initialize();
         }
 
         private void Update()
         {
             _enemyMover.Update();
-        }
-
-        public void ResetState()
-        {
+            EnemyStats.Update();
         }
 
         public void TakeDamage(float amount)
@@ -41,7 +49,13 @@ namespace Code.Enemy
 
         public void Die()
         {
-            OnDestroyed?.Invoke(this);
+            Destroyed?.Invoke(this);
+        }
+
+        private void OnCollisionDetected(Collider2D collider2D)
+        {
+            if (collider2D.TryGetComponent(out Player.Player player)) 
+                player.Die();
         }
     }
 }

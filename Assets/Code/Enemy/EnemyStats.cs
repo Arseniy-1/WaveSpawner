@@ -8,7 +8,6 @@ namespace Code.Enemy
     [Serializable]
     public class EnemyStats : IMoverStats
     {
-        [field: SerializeField] public int Experience { get; private set; }
         [field: SerializeField] public Speed Speed { get; private set; }
         [field: SerializeField] public Health Health {get; private set; }
 

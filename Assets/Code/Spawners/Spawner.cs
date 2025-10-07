@@ -15,14 +15,14 @@ namespace Code.Spawners
         {
             T spawnedObject = Pool.Get();
         
-            spawnedObject.OnDestroyed += OnSpawnedDestroyed;
+            spawnedObject.Destroyed += OnSpawnedDestroyed;
 
             return spawnedObject;
         }
 
         protected void OnSpawnedDestroyed(T spawnableObject)
         {
-            spawnableObject.OnDestroyed -= OnSpawnedDestroyed;
+            spawnableObject.Destroyed -= OnSpawnedDestroyed;
         
             Pool.Release(spawnableObject);
         }

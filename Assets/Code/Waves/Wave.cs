@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Code.Enemy;
 using Code.Services;
 using Code.Spawners.Enemy;
@@ -18,74 +19,77 @@ namespace Code.Waves
 
         private readonly MainEnemySpawner _mainEnemySpawner;
 
-        private readonly List<ObjectWeightPair<Enemy.Enemy>> _enemyWeights;
         private CancellationTokenSource _cancellationToken;
+        private CancellationTokenSource _spawningCancellationToken;
+
+        private int _aliveEnemyCount;
 
         public Wave(WaveConfig config, MainEnemySpawner mainEnemySpawner)
         {
             _config = config;
             _mainEnemySpawner = mainEnemySpawner;
-            _enemyWeights = new List<ObjectWeightPair<Enemy.Enemy>>();
-            
-            if(config == false)
-                Debug.Log("config not setted");
-            
-            _enemyWeights.AddRange(_config.EnemyWeights);
         }
-        
+
         public event Action<Wave> WaveFinished;
 
         public void Begin()
         {
-            if(_config.EnemyStatModifiers.Value > 0)
+            if (_config.EnemyStatModifiers.Value > 0)
                 _mainEnemySpawner.ApplyModifier(_config.EnemyStatModifiers);
-            
-            _cancellationToken?.Cancel();
+
             _cancellationToken = new CancellationTokenSource();
-
-            if (_enemyWeights.IsNullOrEmpty())
-            {
-                WaveFinished?.Invoke(this);
-                
-                return;
-            }
-
-            WaitingEnd(_cancellationToken.Token).Forget();
+            _spawningCancellationToken = new CancellationTokenSource();
             
-            SpawningEnemies(_enemyWeights, _cancellationToken.Token).Forget();
+            SpawningEnemies(_spawningCancellationToken.Token).Forget();
+
+            WaitWaveTimesOut(_cancellationToken.Token).Forget();
         }
 
         public void Disable()
         {
             _cancellationToken?.Cancel();
+            _spawningCancellationToken?.Cancel();
         }
 
-        private async UniTaskVoid SpawningEnemies(List<ObjectWeightPair<Enemy.Enemy>> enemies, CancellationToken token)
+        private async UniTaskVoid SpawningEnemies(CancellationToken token)
         {
-            var picker = new WeightedRandomPicker<Enemy.Enemy>(enemies.Select(pair => pair.Prefab).ToList(),
-                enemies.Select(pair => pair.Weight).ToList());
-            
-            while(token.IsCancellationRequested == false)
-            { 
+            while (token.IsCancellationRequested == false)
+            {
                 await UniTask.Delay(TimeSpan.FromSeconds(_config.SpawnDuration), cancellationToken: token);
 
-                EnemyTypes preferredEnemy = picker.Pick().EnemyType;
                 int enemyCount = Random.Range(_config.SpawnClusterSize.x, _config.SpawnClusterSize.y + 1);
+                var enemyTypes = _config.EnemyTypes[Random.Range(0, _config.EnemyTypes.Count)];
+                
+                _aliveEnemyCount += enemyCount;
 
                 for (int i = 0; i < enemyCount; i++)
                 {
-                    Enemy.Enemy enemy = _mainEnemySpawner.Spawn(preferredEnemy);
-                    
-                    enemy.ResetState();
+                    Enemy.Enemy enemy = _mainEnemySpawner.Spawn(enemyTypes);
+                    enemy.Destroyed += HandleEnemyDeath;
                 }
             }
-        } 
+        }
 
-        private async UniTaskVoid WaitingEnd(CancellationToken token)
+        private void HandleEnemyDeath(Enemy.Enemy enemy)
+        {
+            enemy.Destroyed -= HandleEnemyDeath;
+            _aliveEnemyCount -= 1;
+        }
+
+        private async UniTaskVoid HandleEndWave(CancellationToken token)
+        {
+            await UniTask.WaitUntil(() => _aliveEnemyCount == 0);
+            await UniTask.Delay(TimeSpan.FromSeconds(_config.WavePauseTime), cancellationToken: token);
+
+            WaveFinished?.Invoke(this);
+        }
+
+        private async UniTaskVoid WaitWaveTimesOut(CancellationToken token)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(_config.WaveDuration), cancellationToken: token);
             
-            WaveFinished?.Invoke(this);
+            _spawningCancellationToken.Cancel();
+            HandleEndWave(_cancellationToken.Token).Forget();
         }
     }
 }

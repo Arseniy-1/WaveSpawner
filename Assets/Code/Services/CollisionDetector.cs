@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace Code.Services
 {
-    public abstract class CollisionHandler : MonoBehaviour
+    public class CollisionDetector : MonoBehaviour
     {
+        public event Action<Collider2D> CollisionDetected;
+        
         private void OnTriggerEnter2D(Collider2D collision)
         {
             HandleCollision(collision);
@@ -19,6 +22,9 @@ namespace Code.Services
             HandleCollision(collision.collider);
         }
 
-        protected abstract void HandleCollision(Collider2D collider);
+        private void HandleCollision(Collider2D collider)
+        {
+            CollisionDetected?.Invoke(collider);           
+        }
     }
 }

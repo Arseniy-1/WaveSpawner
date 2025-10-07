@@ -1,9 +1,8 @@
-﻿using Code.Spawners.Bullet;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Player
 {
-    public class Player : MonoBehaviour, ITarget
+    public class Player : MonoBehaviour, ITarget, IDieable
     {
         [SerializeField] private PlayerInputHandler _inputHandler;
         [SerializeField] private PlayerWeapon _playerGun;
@@ -28,6 +27,11 @@ namespace Code.Player
         private void OnShootButtonPressed()
         {
             _playerGun.Shoot();
+        }
+
+        public void Die()
+        {
+            Debug.Log("PlayerDie");
         }
     }
 }
