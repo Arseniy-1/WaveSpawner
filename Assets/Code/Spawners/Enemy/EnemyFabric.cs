@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Code.Spawners.Enemy
 {
-    public class EnemyFabric
+    public class EnemyFabric : IEnemyFabric
     {
         private readonly Player.Player _player;
 

@@ -24,7 +24,7 @@ namespace Code.Spawners
         {
             spawnableObject.Destroyed -= OnSpawnedDestroyed;
         
-            Pool.Release(spawnableObject);
+            Pool.Return(spawnableObject);
         }
     }
 }

@@ -8,20 +8,23 @@ namespace Code.Spawners
     public abstract class Pool<T> where T : MonoBehaviour
     {
         private int _startAmount;
-
+        private GameObject _container;
+        
         protected T Prefab;
         protected Stack<T> Stack = new();
 
-        protected Pool(T prefab, int startAmount)
+        protected Pool(T prefab, int startAmount, GameObject container)
         {
             Prefab = prefab;
             _startAmount = startAmount;
+            _container = container;
         }
 
-        public void Release(T template)
+        public void Return(T template)
         {
             template.gameObject.SetActive(false); 
             Stack.Push(template);
+            template.transform.parent = _container.transform;
         }
 
         public T Get()
@@ -33,7 +36,7 @@ namespace Code.Spawners
             }
         
             template.gameObject.SetActive(true);
-
+            template.transform.parent = null;
             return template;
         }
     
@@ -42,7 +45,7 @@ namespace Code.Spawners
             for (int i = 0; i < _startAmount; i++)
             {
                 T obj = Create();
-                Release(obj);
+                Return(obj);
             }
         }
 

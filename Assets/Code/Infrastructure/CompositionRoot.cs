@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code.Services;
 using Code.Services.StaticData;
 using Code.Spawners.Enemy;
 using Code.Waves;
@@ -17,18 +16,16 @@ namespace Code.Infrastructure
         private List<WaveConfig> _waveConfigs;
         private Queue<Wave> _waves = new Queue<Wave>();
         
-        private void Awake()
-        {
-            _mainEnemySpawner.Initialize(_player, _spawnPoints);
-
-            SetupWaves(_mainEnemySpawner);
-            StartFistWave();
-        }
-
         [Inject]
         public void Construct(IStaticDataService staticDataService)
         {
+            staticDataService.LoadAll();
             _waveConfigs = staticDataService.WaveConfigs;
+            
+            _mainEnemySpawner.Initialize(_spawnPoints);
+
+            SetupWaves(_mainEnemySpawner);
+            StartFistWave();
         }
 
         private void OnDisable()

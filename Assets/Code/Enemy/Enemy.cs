@@ -1,8 +1,10 @@
 ﻿using System;
 using Code.Common;
 using Code.Services;
+using Code.Services.Time;
 using Code.Spawners.Bullet;
 using UnityEngine;
+using Zenject;
 
 namespace Code.Enemy
 {
@@ -27,17 +29,17 @@ namespace Code.Enemy
             _collisionDetector.CollisionDetected -= OnCollisionDetected;
         }
 
+        private void Update()
+        {
+            _enemyMover.Update();
+            EnemyStats.Update();
+        }
+
         public void Initialize(ITarget target)
         {
             _enemyMover = new EnemyMover(EnemyStats, target, transform);
             Destroyer.Initialize(EnemyStats.Health, this);
             EnemyStats.Initialize();
-        }
-
-        private void Update()
-        {
-            _enemyMover.Update();
-            EnemyStats.Update();
         }
 
         public void TakeDamage(float amount)

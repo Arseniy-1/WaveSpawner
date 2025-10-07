@@ -7,5 +7,6 @@ namespace Code.Services.StaticData
     {
         void LoadAll();
         List<WaveConfig> WaveConfigs { get; }
+        List<Enemy.Enemy> EnemyPrefabs { get; }
     }
 }

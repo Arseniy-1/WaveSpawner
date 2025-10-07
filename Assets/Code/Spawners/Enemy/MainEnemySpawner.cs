@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Enemy;
+using Code.Services.StaticData;
 using Code.Waves;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Code.Spawners.Enemy
@@ -17,12 +19,20 @@ namespace Code.Spawners.Enemy
 
         private readonly Dictionary<EnemyTypes, EnemySpawner> _spawners = new();
 
-        public void Initialize(Player.Player player, IReadOnlyList<Transform> spawnPoints)
+        public void Initialize(IReadOnlyList<Transform> spawnPoints)
         {
-            _spawnPoints = spawnPoints;
-        
+            _spawnPoints = spawnPoints; 
+        }
+
+        [Inject]
+        public void Construct(IStaticDataService staticData, IEnemyFabric enemyFabric)
+        {
+            staticData.LoadAll();
+            _enemyPrefabs = staticData.EnemyPrefabs;
+            
+            Debug.Log(_enemyPrefabs.Count());
             foreach (var enemySpawner in _enemyPrefabs
-                         .Select(enemyPrefab => new EnemySpawner(enemyPrefab, player, _startPoolCount)))
+                         .Select(enemyPrefab => new EnemySpawner(enemyPrefab, _startPoolCount, enemyFabric)))
             {
                 _spawners.Add(enemySpawner.EnemyType, enemySpawner);
             }

@@ -11,7 +11,6 @@ namespace Code.Enemy
         private IMoverStats _moverStats;
         private ITarget _target;
         private Transform _holder;
-        private ITimeService _time;
 
         public EnemyMover(IMoverStats moverStats, ITarget target, Transform holder)
         {
@@ -19,18 +18,12 @@ namespace Code.Enemy
             _target = target;
             _holder = holder;
         }
-
-        [Inject]
-        public void Construct(ITimeService time)
-        {
-            _time = time;
-        }
         
         public void Update()
         {
             var moveDirection = (_target.TargetTransform.position - _holder.position).normalized;
 
-            _holder.position += moveDirection * (_moverStats.Speed.CurrentValue * _time.DeltaTime);
+            _holder.position += moveDirection * (_moverStats.Speed.CurrentValue * Time.deltaTime);
         }
     }
 }

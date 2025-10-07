@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Code.Services.SceneLoader;
+using Code.UI;
+using UnityEngine;
+using Zenject;
 
 namespace Code.Player
 {
@@ -6,6 +9,8 @@ namespace Code.Player
     {
         [SerializeField] private PlayerInputHandler _inputHandler;
         [SerializeField] private PlayerWeapon _playerGun;
+        
+        private ISceneLoader _sceneLoader;
 
         public Transform TargetTransform { get; private set; }
 
@@ -24,6 +29,12 @@ namespace Code.Player
             _inputHandler.ShootButtonPressed -= OnShootButtonPressed;
         }
 
+        [Inject]
+        public void Construct(ISceneLoader sceneLoader)
+        {
+            _sceneLoader = sceneLoader;
+        }
+
         private void OnShootButtonPressed()
         {
             _playerGun.Shoot();
@@ -31,7 +42,7 @@ namespace Code.Player
 
         public void Die()
         {
-            Debug.Log("PlayerDie");
+            _sceneLoader.LoadScene(ScenesId.StartGame.ToString());
         }
     }
 }

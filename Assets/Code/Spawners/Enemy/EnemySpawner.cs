@@ -11,10 +11,10 @@ namespace Code.Spawners.Enemy
 
         public EnemyTypes EnemyType => Prefab.EnemyType;
 
-        public EnemySpawner(Code.Enemy.Enemy enemyPrefab, Player.Player player, int startCount)
+        public EnemySpawner(Code.Enemy.Enemy enemyPrefab, int startCount, IEnemyFabric enemyFabric)
         {
             StartAmount = startCount;
-            var fabric = new EnemyFabric(player);
+            var fabric = enemyFabric;
 
             Prefab = enemyPrefab;
 
