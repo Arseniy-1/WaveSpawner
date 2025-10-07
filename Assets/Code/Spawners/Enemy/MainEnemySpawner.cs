@@ -30,7 +30,6 @@ namespace Code.Spawners.Enemy
             staticData.LoadAll();
             _enemyPrefabs = staticData.EnemyPrefabs;
             
-            Debug.Log(_enemyPrefabs.Count());
             foreach (var enemySpawner in _enemyPrefabs
                          .Select(enemyPrefab => new EnemySpawner(enemyPrefab, _startPoolCount, enemyFabric)))
             {

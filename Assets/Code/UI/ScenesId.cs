@@ -4,6 +4,6 @@ namespace Code.UI
     {
         Unknown = 0,
         StartGame = 1,
-        Main = 1,
+        Main = 2,
     }
 }

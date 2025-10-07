@@ -42,7 +42,7 @@ namespace Code.Player
 
         public void Die()
         {
-            _sceneLoader.LoadScene(ScenesId.StartGame.ToString());
+            _sceneLoader.LoadScene(ScenesId.Main.ToString());
         }
     }
 }
