@@ -1567,10 +1567,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4513961500159147072, guid: 096e768acb07e72448f84b9fbf9af880, type: 3}
-      propertyPath: _bulletReloadTime
-      value: 0.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
