@@ -35,14 +35,14 @@ namespace Code.Player
             _sceneLoader = sceneLoader;
         }
 
-        private void OnShootButtonPressed()
-        {
-            _playerGun.Shoot();
-        }
-
         public void Die()
         {
             _sceneLoader.LoadScene(ScenesId.Main.ToString());
+        }
+
+        private void OnShootButtonPressed()
+        {
+            _playerGun.Shoot();
         }
     }
 }

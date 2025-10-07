@@ -9,7 +9,7 @@ namespace Code.Spawners
     {
         private int _startAmount;
         private GameObject _container;
-        
+
         protected T Prefab;
         protected Stack<T> Stack = new();
 
@@ -22,12 +22,12 @@ namespace Code.Spawners
 
         public void Return(T template)
         {
-            if(template == null)
+            if (template == null)
                 return;
-            
-            template.gameObject.SetActive(false); 
-            Stack.Push(template);
+
             template.transform.parent = _container.transform;
+            template.gameObject.SetActive(false);
+            Stack.Push(template);
         }
 
         public T Get()
@@ -37,13 +37,16 @@ namespace Code.Spawners
                 Stack.Push(Create());
                 template = Stack.Pop();
             }
-        
-            template.gameObject.SetActive(true);
-            template.transform.parent = null;
-            
+
+            if (template != null)
+            {
+                template.gameObject.SetActive(true);
+                template.transform.parent = null;
+            }
+
             return template;
         }
-    
+
         protected void CreateStartCount()
         {
             for (int i = 0; i < _startAmount; i++)

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Code.Services.SceneLoader
+namespace Code.Services
 {
     public interface ICoroutineRunner
     {

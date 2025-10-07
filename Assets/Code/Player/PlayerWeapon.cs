@@ -7,9 +7,10 @@ namespace Code.Player
 {
     public class PlayerWeapon : MonoBehaviour
     {
-        [SerializeField] protected Bullet BulletPrefab;
-        [SerializeField] protected Transform ShootPoint;
-        [SerializeField] protected AmmoSpawner AmmoSpawner;
+        [SerializeField] private Bullet _bulletPrefab;
+        [SerializeField] private Transform _shootPoint;
+        [SerializeField] private AmmoSpawner _ammoSpawner;
+        
         [SerializeField] private float _bulletReloadTime;
         [SerializeField] private int _damage;
         [SerializeField] private float _spread;
@@ -21,7 +22,7 @@ namespace Code.Player
 
         protected virtual void Awake()
         {
-            AmmoSpawner = new AmmoSpawner(BulletPrefab);
+            _ammoSpawner = new AmmoSpawner(_bulletPrefab);
         }
 
         private void Update()
@@ -56,8 +57,8 @@ namespace Code.Player
 
             _isReloaded = false;
             
-            Bullet bullet = AmmoSpawner.Spawn();
-            bullet.Init(ShootPoint.position, GetBulletDirection(), _damage);
+            Bullet bullet = _ammoSpawner.Spawn();
+            bullet.Init(_shootPoint.position, GetBulletDirection(), _damage);
 
             bullet.Activate();
         }

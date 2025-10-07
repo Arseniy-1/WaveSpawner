@@ -38,9 +38,10 @@ namespace Code.Spawners.Bullet
     
         private void OnDisable()
         {
-            ReturnToPool();
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
         }
-    
+        
         public void Activate()
         {
             _rigidbody2D.velocity = transform.right * _speed;

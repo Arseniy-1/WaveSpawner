@@ -342,10 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c803672410c4fd2a55a2eee846d343d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletPrefab: {fileID: 5138851147596832567, guid: 4d72485364c0357418104a4a04274e12, type: 3}
-  ShootPoint: {fileID: 3759697221501311084}
-  AmmoSpawner:
-    StartAmount: 10
-  _bulletReloadTime: 2
+  _bulletPrefab: {fileID: 5138851147596832567, guid: 4d72485364c0357418104a4a04274e12, type: 3}
+  _shootPoint: {fileID: 3759697221501311084}
+  _ammoSpawner:
+    StartAmount: 20
+  _bulletReloadTime: 0.4
   _damage: 5
   _spread: 0.1

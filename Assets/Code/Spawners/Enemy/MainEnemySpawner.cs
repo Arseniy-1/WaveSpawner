@@ -58,7 +58,7 @@ namespace Code.Spawners.Enemy
 
         private void MoveEnemy(Code.Enemy.Enemy enemy)
         {
-            if(_spawnPoints == null)
+            if(_spawnPoints == null || enemy == null)
                 return;
             
             Vector2 spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
