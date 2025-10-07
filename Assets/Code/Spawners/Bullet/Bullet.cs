@@ -16,13 +16,12 @@ namespace Code.Spawners.Bullet
         private WaitForSeconds _waitLife;
 
         public event Action<Bullet> Destroyed;
-        public event Action<IDamageable> OnDamagableCollided;
 
-        public Rigidbody2D Rigidbody2D { get; private set; }
+        private Rigidbody2D _rigidbody2D;
 
         private void Awake()
         {
-            Rigidbody2D = GetComponent<Rigidbody2D>();
+            _rigidbody2D = GetComponent<Rigidbody2D>();
         
             _waitLife = new WaitForSeconds(_lifeTime);
         }
@@ -34,8 +33,6 @@ namespace Code.Spawners.Bullet
             if (collision.TryGetComponent(out IDamageable damagable) == false) 
                 return;
         
-            OnDamagableCollided?.Invoke(damagable);
-        
             damagable.TakeDamage(_damage);
         }
     
@@ -46,7 +43,7 @@ namespace Code.Spawners.Bullet
     
         public void Activate()
         {
-            Rigidbody2D.velocity = transform.right * _speed;
+            _rigidbody2D.velocity = transform.right * _speed;
         }
 
         public void Init(Vector3 startPosition, Quaternion rotation, int damage)

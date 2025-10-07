@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Code.Services;
+using Code.Services.StaticData;
 using Code.Spawners.Enemy;
 using Code.Waves;
 using UnityEngine;
@@ -16,8 +17,6 @@ namespace Code.Infrastructure
         private List<WaveConfig> _waveConfigs;
         private Queue<Wave> _waves = new Queue<Wave>();
         
-        private IStaticDataService _staticData;
-
         private void Awake()
         {
             _mainEnemySpawner.Initialize(_player, _spawnPoints);
@@ -29,7 +28,6 @@ namespace Code.Infrastructure
         [Inject]
         public void Construct(IStaticDataService staticDataService)
         {
-            _staticData = staticDataService;
             _waveConfigs = staticDataService.WaveConfigs;
         }
 

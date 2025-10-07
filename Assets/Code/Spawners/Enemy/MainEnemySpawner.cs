@@ -16,7 +16,6 @@ namespace Code.Spawners.Enemy
         private IReadOnlyList<Transform> _spawnPoints;
 
         private readonly Dictionary<EnemyTypes, EnemySpawner> _spawners = new();
-    
 
         public void Initialize(Player.Player player, IReadOnlyList<Transform> spawnPoints)
         {

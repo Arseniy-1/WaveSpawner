@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Code.Waves;
 
-namespace Code.Services
+namespace Code.Services.StaticData
 {
     public interface IStaticDataService
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Code.Services
+namespace Code.Services.Time
 {
     public interface ITimeService
     {

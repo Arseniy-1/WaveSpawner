@@ -1,6 +1,7 @@
+using Code.Services.Random;
 using Code.Spawners.Bullet;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Zenject;
 
 namespace Code.Player
 {
@@ -15,6 +16,8 @@ namespace Code.Player
 
         private float _currentTime;
         private bool _isReloaded;
+        
+        private IRandomService _random;
 
         protected virtual void Awake()
         {
@@ -40,8 +43,17 @@ namespace Code.Player
                 Reload();
         }
 
+        [Inject]
+        public void Construct(IRandomService randomService)
+        {
+            _random = randomService;
+        }
+
         public void Shoot()
         {
+            if(_isReloaded == false)
+                return;
+            
             Bullet bullet = AmmoSpawner.Spawn();
             bullet.Init(ShootPoint.position, GetBulletDirection(), _damage);
 
@@ -57,7 +69,7 @@ namespace Code.Player
         private Quaternion GetBulletDirection()
         {
             Quaternion rotation = transform.rotation;
-            rotation.z += Random.Range(-_spread, _spread);
+            rotation.z += _random.Range(-_spread, _spread);
 
             return rotation;
         }

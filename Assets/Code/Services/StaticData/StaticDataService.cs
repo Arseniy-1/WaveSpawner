@@ -3,7 +3,7 @@ using System.Linq;
 using Code.Waves;
 using UnityEngine;
 
-namespace Code.Services
+namespace Code.Services.StaticData
 {
     public class StaticDataService : IStaticDataService
     {    
