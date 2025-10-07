@@ -110,7 +110,7 @@ MonoBehaviour:
       <BaseValue>k__BackingField: 10
       <CurrentValue>k__BackingField: 10
   <Destroyer>k__BackingField: {fileID: -3611053174251576177}
-  _collisionDetector: {fileID: -262506129740940059, guid: 237317293858aba47b9179ed28b1c2e8, type: 3}
+  _collisionDetector: {fileID: 2277442521759948073}
 --- !u!58 &3420467264805431828
 CircleCollider2D:
   m_ObjectHideFlags: 0

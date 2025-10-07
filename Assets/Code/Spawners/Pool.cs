@@ -22,6 +22,9 @@ namespace Code.Spawners
 
         public void Return(T template)
         {
+            if(template == null)
+                return;
+            
             template.gameObject.SetActive(false); 
             Stack.Push(template);
             template.transform.parent = _container.transform;
@@ -37,6 +40,7 @@ namespace Code.Spawners
         
             template.gameObject.SetActive(true);
             template.transform.parent = null;
+            
             return template;
         }
     

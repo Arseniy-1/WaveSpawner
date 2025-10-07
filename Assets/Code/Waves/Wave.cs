@@ -57,6 +57,9 @@ namespace Code.Waves
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_config.SpawnDuration), cancellationToken: token);
 
+                if(token.IsCancellationRequested)
+                    break;
+                
                 int enemyCount = Random.Range(_config.SpawnClusterSize.x, _config.SpawnClusterSize.y + 1);
                 var enemyTypes = _config.EnemyTypes[Random.Range(0, _config.EnemyTypes.Count)];
                 

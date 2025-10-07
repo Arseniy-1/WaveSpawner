@@ -11,10 +11,10 @@ namespace Code.Spawners.Enemy
 {
     public class MainEnemySpawner : MonoBehaviour
     {
-        [SerializeField] private List<Code.Enemy.Enemy> _enemyPrefabs;
         [SerializeField] private int _startPoolCount;
         [SerializeField] private float _spawnOffset;
 
+        private List<Code.Enemy.Enemy> _enemyPrefabs;
         private IReadOnlyList<Transform> _spawnPoints;
 
         private readonly Dictionary<EnemyTypes, EnemySpawner> _spawners = new();
@@ -58,6 +58,9 @@ namespace Code.Spawners.Enemy
 
         private void MoveEnemy(Code.Enemy.Enemy enemy)
         {
+            if(_spawnPoints == null)
+                return;
+            
             Vector2 spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
         
             enemy.transform.position = Random.insideUnitCircle * _spawnOffset + spawnPoint;

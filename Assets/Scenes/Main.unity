@@ -722,10 +722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefa7f8a3e734617a9f4a7bf75242ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefabs:
-  - {fileID: 7075741624531407723, guid: 237317293858aba47b9179ed28b1c2e8, type: 3}
-  - {fileID: 8143883989467241833, guid: 7598806d718c50e45b006c5dcb530217, type: 3}
-  - {fileID: 1862393447301349153, guid: 2da58da035bd67748a360293dd72bb60, type: 3}
   _startPoolCount: 10
   _spawnOffset: 2
 --- !u!4 &664964505
@@ -1570,6 +1566,10 @@ PrefabInstance:
     - target: {fileID: 2040430380185054645, guid: 096e768acb07e72448f84b9fbf9af880, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513961500159147072, guid: 096e768acb07e72448f84b9fbf9af880, type: 3}
+      propertyPath: _bulletReloadTime
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

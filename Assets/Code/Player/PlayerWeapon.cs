@@ -53,6 +53,8 @@ namespace Code.Player
         {
             if(_isReloaded == false)
                 return;
+
+            _isReloaded = false;
             
             Bullet bullet = AmmoSpawner.Spawn();
             bullet.Init(ShootPoint.position, GetBulletDirection(), _damage);

@@ -26,6 +26,12 @@ namespace Code.Player
             _playerInput.Player.Shoot.performed -= OnShootPerformed;
         }
 
+        private void Update()
+        {
+            if (_playerInput.Player.Shoot.IsPressed()) 
+                ShootButtonPressed?.Invoke();
+        }
+
         private void OnShootPerformed(InputAction.CallbackContext obj)
         {
             ShootButtonPressed?.Invoke();
